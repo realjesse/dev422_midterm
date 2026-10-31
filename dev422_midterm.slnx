@@ -1,3 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="AlbumInventoryMicroserviceAPI/AlbumInventoryMicroserviceAPI.csproj" />
+  <Project Path="CollaborativePlaylistBuilderAPI/CollaborativePlaylistBuilderAPI.csproj" />
   <Project Path="dev422_midterm/dev422_midterm.csproj" />
+  <Project Path="MusicRentalManagementAPI/MusicRentalManagementAPI.csproj" />
 </Solution>

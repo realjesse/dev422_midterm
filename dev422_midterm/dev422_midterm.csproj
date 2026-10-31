@@ -76,5 +76,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="album_inventory_microservice\" />
+    <Folder Include="collaborative_playlist_builder\" />
+    <Folder Include="homepage\" />
+    <Folder Include="music_rental_management\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

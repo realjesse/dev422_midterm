@@ -1,0 +1,6 @@
+@CollaborativePlaylistBuilderAPI_HostAddress = http://localhost:5123
+
+GET {{CollaborativePlaylistBuilderAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
