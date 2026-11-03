@@ -1,4 +1,5 @@
 using CollaborativePlaylistBuilderAPI.Models;
+using CollaborativePlaylistBuilderAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollaborativePlaylistBuilderAPI.Controllers;
@@ -7,8 +8,13 @@ namespace CollaborativePlaylistBuilderAPI.Controllers;
 [Route("api/playlists")]
 public class PlaylistController : ControllerBase
 {
-    private static readonly List<Playlist> Playlists = new();
     private static readonly List<Song> Songs = new();
+    private readonly IPlaylistRepository _playlistRepository;
+
+    public PlaylistController(IPlaylistRepository playlistRepository)
+    {
+        _playlistRepository = playlistRepository;
+    }
 
     [HttpPost]
     public ActionResult<Playlist> CreatePlaylist([FromBody] CreatePlaylistRequest request)
@@ -30,13 +36,13 @@ public class PlaylistController : ControllerBase
 
         var playlist = new Playlist
         {
-            Id = Playlists.Count + 1,
+            Id = 0,
             Name = request.Name,
             Songs = new List<Song>(),
             CreatedBy = request.CreatedBy!.Value,
             IsCollaborative = request.IsCollaborative!.Value
         };
-        Playlists.Add(playlist);
+        _playlistRepository.Add(playlist);
 
         return StatusCode(StatusCodes.Status201Created, playlist);
     }
