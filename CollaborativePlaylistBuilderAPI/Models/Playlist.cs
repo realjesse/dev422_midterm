@@ -6,7 +6,7 @@ public class Playlist
 
     public required string Name { get; set; }
 
-    public required List<Song> Songs { get; set; }
+    public required List<int> Songs { get; set; }
 
     public required int CreatedBy { get; set; }
 

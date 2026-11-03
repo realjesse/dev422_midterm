@@ -33,7 +33,7 @@ public class PlaylistService
         {
             Id = 0,
             Name = request.Name,
-            Songs = new List<Song>(),
+            Songs = new List<int>(),
             CreatedBy = createdBy,
             IsCollaborative = isCollaborative
         };
