@@ -2,13 +2,13 @@ namespace CollaborativePlaylistBuilderAPI.Models;
 
 public class Playlist
 {
-    public int Id { get; set; }
-    
-    public string Name { get; set; } = string.Empty;
+    public required int Id { get; set; }
 
-    public List<Song> Songs { get; set; } = new();
+    public required string Name { get; set; }
 
-    public int CreatedBy { get; set; }
+    public required List<Song> Songs { get; set; }
 
-    public bool IsCollaborative { get; set; }
+    public required int CreatedBy { get; set; }
+
+    public required bool IsCollaborative { get; set; }
 }
