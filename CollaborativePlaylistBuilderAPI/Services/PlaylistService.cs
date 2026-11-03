@@ -19,12 +19,12 @@ public class PlaylistService
             throw new ArgumentException("Playlist name is required.");
         }
 
-        if (request.CreatedBy is not int createdBy)
+        if (request.CreatedBy is null)
         {
             throw new ArgumentException("Playlist created by is required.");
         }
 
-        if (request.IsCollaborative is not bool isCollaborative)
+        if (request.IsCollaborative is null)
         {
             throw new ArgumentException("Collaborative is required.");
         }
@@ -34,8 +34,8 @@ public class PlaylistService
             Id = 0,
             Name = request.Name,
             Songs = new List<int>(),
-            CreatedBy = createdBy,
-            IsCollaborative = isCollaborative
+            CreatedBy = request.CreatedBy.Value,
+            IsCollaborative = request.IsCollaborative.Value
         };
 
         return _playlistRepository.Add(playlist);
