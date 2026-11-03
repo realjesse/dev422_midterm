@@ -1,5 +1,5 @@
 using CollaborativePlaylistBuilderAPI.Models;
-using CollaborativePlaylistBuilderAPI.Repositories;
+using CollaborativePlaylistBuilderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollaborativePlaylistBuilderAPI.Controllers;
@@ -8,42 +8,24 @@ namespace CollaborativePlaylistBuilderAPI.Controllers;
 [Route("api/playlists")]
 public class PlaylistController : ControllerBase
 {
-    private static readonly List<Song> Songs = new();
-    private readonly IPlaylistRepository _playlistRepository;
+    private readonly PlaylistService _playlistService;
 
-    public PlaylistController(IPlaylistRepository playlistRepository)
+    public PlaylistController(PlaylistService playlistService)
     {
-        _playlistRepository = playlistRepository;
+        _playlistService = playlistService;
     }
 
     [HttpPost]
     public ActionResult<Playlist> CreatePlaylist([FromBody] CreatePlaylistRequest request)
     {
-        if (string.IsNullOrWhiteSpace(request.Name))
+        try
         {
-            return BadRequest("Playlist name is required.");
+            var playlist = _playlistService.CreatePlaylist(request);
+            return StatusCode(StatusCodes.Status201Created, playlist);
         }
-
-        if (request.CreatedBy is not int)
+        catch (ArgumentException exception)
         {
-            return BadRequest("Playlist created by is required.");
+            return BadRequest(exception.Message);
         }
-
-        if (request.IsCollaborative is not bool)
-        {
-            return BadRequest("Collaborative is required.");
-        }
-
-        var playlist = new Playlist
-        {
-            Id = 0,
-            Name = request.Name,
-            Songs = new List<Song>(),
-            CreatedBy = request.CreatedBy!.Value,
-            IsCollaborative = request.IsCollaborative!.Value
-        };
-        _playlistRepository.Add(playlist);
-
-        return StatusCode(StatusCodes.Status201Created, playlist);
     }
 }
