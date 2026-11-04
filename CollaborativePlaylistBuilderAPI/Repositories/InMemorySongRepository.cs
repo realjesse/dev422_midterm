@@ -17,4 +17,9 @@ public class InMemorySongRepository : ISongRepository
     {
         return Songs.ToList();
     }
+
+    public Song? GetById(int id)
+    {
+        return Songs.FirstOrDefault(song => song.Id == id);
+    }
 }

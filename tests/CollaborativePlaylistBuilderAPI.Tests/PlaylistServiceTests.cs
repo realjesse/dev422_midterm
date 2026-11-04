@@ -1,4 +1,5 @@
 using CollaborativePlaylistBuilderAPI.Services;
+using CollaborativePlaylistBuilderAPI.Repositories;
 using Xunit;
 
 namespace CollaborativePlaylistBuilderAPI.Tests;
@@ -11,7 +12,7 @@ public class PlaylistServiceTests
     public void CreatePlaylist_SavesFieldsAndReturnsAssignedId(int createdBy, bool isCollaborative)
     {
         var repository = new RecordingPlaylistRepository();
-        var service = new PlaylistService(repository);
+        var service = new PlaylistService(repository, new InMemorySongRepository());
 
         var playlist = service.CreatePlaylist(PlaylistTestData.Request(
             createdBy: createdBy, isCollaborative: isCollaborative));
@@ -30,7 +31,7 @@ public class PlaylistServiceTests
         string? name, int? createdBy, bool? isCollaborative, string expectedMessage)
     {
         var repository = new RecordingPlaylistRepository();
-        var service = new PlaylistService(repository);
+        var service = new PlaylistService(repository, new InMemorySongRepository());
 
         var exception = Assert.Throws<ArgumentException>(() => service.CreatePlaylist(
             PlaylistTestData.Request(name, createdBy, isCollaborative)));
@@ -42,7 +43,7 @@ public class PlaylistServiceTests
     [Fact]
     public void CreatePlaylist_GivesEachPlaylistItsOwnSongIdList()
     {
-        var service = new PlaylistService(new RecordingPlaylistRepository());
+        var service = new PlaylistService(new RecordingPlaylistRepository(), new InMemorySongRepository());
         var first = service.CreatePlaylist(PlaylistTestData.Request());
         var second = service.CreatePlaylist(PlaylistTestData.Request());
 

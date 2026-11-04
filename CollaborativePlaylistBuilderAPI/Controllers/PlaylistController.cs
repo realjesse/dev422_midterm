@@ -34,4 +34,17 @@ public class PlaylistController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
+
+    [HttpPut("{id:int}/songs/{songId:int}")]
+    public ActionResult<Playlist> AddSong(int id, int songId)
+    {
+        try
+        {
+            return Ok(_playlistService.AddSong(id, songId));
+        }
+        catch (KeyNotFoundException exception)
+        {
+            return NotFound(exception.Message);
+        }
+    }
 }

@@ -6,10 +6,12 @@ namespace CollaborativePlaylistBuilderAPI.Services;
 public class PlaylistService
 {
     private readonly IPlaylistRepository _playlistRepository;
+    private readonly ISongRepository _songRepository;
 
-    public PlaylistService(IPlaylistRepository playlistRepository)
+    public PlaylistService(IPlaylistRepository playlistRepository, ISongRepository songRepository)
     {
         _playlistRepository = playlistRepository;
+        _songRepository = songRepository;
     }
 
     public Playlist CreatePlaylist(CreatePlaylistRequest request)
@@ -43,5 +45,24 @@ public class PlaylistService
     public IReadOnlyList<Playlist> GetPlaylists()
     {
         return _playlistRepository.GetAll();
+    }
+
+    public Playlist AddSong(int playlistId, int songId)
+    {
+        var playlist = _playlistRepository.GetById(playlistId)
+            ?? throw new KeyNotFoundException("Playlist not found.");
+
+        if (_songRepository.GetById(songId) is null)
+        {
+            throw new KeyNotFoundException("Song not found.");
+        }
+
+        if (playlist.Songs.Contains(songId))
+        {
+            return playlist;
+        }
+
+        playlist.Songs.Add(songId);
+        return _playlistRepository.Update(playlist);
     }
 }

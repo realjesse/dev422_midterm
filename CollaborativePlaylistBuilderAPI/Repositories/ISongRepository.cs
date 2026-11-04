@@ -7,4 +7,6 @@ public interface ISongRepository
     Song Add(Song song);
 
     IReadOnlyList<Song> GetAll();
+
+    Song? GetById(int id);
 }

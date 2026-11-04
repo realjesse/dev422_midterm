@@ -17,4 +17,21 @@ public class InMemoryPlaylistRepository : IPlaylistRepository
     {
         return Playlists.ToList();
     }
+
+    public Playlist? GetById(int id)
+    {
+        return Playlists.FirstOrDefault(playlist => playlist.Id == id);
+    }
+
+    public Playlist Update(Playlist playlist)
+    {
+        var index = Playlists.FindIndex(existing => existing.Id == playlist.Id);
+        if (index < 0)
+        {
+            throw new KeyNotFoundException("Playlist not found.");
+        }
+
+        Playlists[index] = playlist;
+        return playlist;
+    }
 }

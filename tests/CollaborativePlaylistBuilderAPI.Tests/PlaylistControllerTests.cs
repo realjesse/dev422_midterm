@@ -1,5 +1,6 @@
 using CollaborativePlaylistBuilderAPI.Controllers;
 using CollaborativePlaylistBuilderAPI.Models;
+using CollaborativePlaylistBuilderAPI.Repositories;
 using CollaborativePlaylistBuilderAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ public class PlaylistControllerTests
     public void CreatePlaylist_ValidRequestReturns201WithSavedPlaylist()
     {
         var repository = new RecordingPlaylistRepository();
-        var controller = new PlaylistController(new PlaylistService(repository));
+        var controller = new PlaylistController(new PlaylistService(repository, new InMemorySongRepository()));
 
         var response = controller.CreatePlaylist(PlaylistTestData.Request());
 
@@ -34,7 +35,7 @@ public class PlaylistControllerTests
         string? name, int? createdBy, bool? isCollaborative, string expectedMessage)
     {
         var repository = new RecordingPlaylistRepository();
-        var controller = new PlaylistController(new PlaylistService(repository));
+        var controller = new PlaylistController(new PlaylistService(repository, new InMemorySongRepository()));
 
         var response = controller.CreatePlaylist(
             PlaylistTestData.Request(name, createdBy, isCollaborative));

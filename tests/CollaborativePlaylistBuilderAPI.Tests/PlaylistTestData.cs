@@ -33,4 +33,20 @@ internal sealed class RecordingPlaylistRepository : IPlaylistRepository
         playlist.Id = 123;
         return playlist;
     }
+
+    public IReadOnlyList<Playlist> GetAll() => Added.ToList();
+
+    public Playlist? GetById(int id) => Added.FirstOrDefault(playlist => playlist.Id == id);
+
+    public Playlist Update(Playlist playlist)
+    {
+        var index = Added.FindIndex(existing => existing.Id == playlist.Id);
+        if (index < 0)
+        {
+            throw new KeyNotFoundException("Playlist not found.");
+        }
+
+        Added[index] = playlist;
+        return playlist;
+    }
 }
