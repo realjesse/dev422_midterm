@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IPlaylistRepository, InMemoryPlaylistRepository>();
 builder.Services.AddScoped<PlaylistService>();
+builder.Services.AddSingleton<ISongRepository, InMemorySongRepository>();
+builder.Services.AddScoped<SongService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
