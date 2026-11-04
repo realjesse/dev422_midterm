@@ -5,14 +5,14 @@ namespace CollaborativePlaylistBuilderAPI.Models;
 public class CreateSongRequest
 {
     [Required]
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
 
     [Required]
-    public string Artist { get; set; } = string.Empty;
+    public string? Artist { get; set; }
 
     [Required]
-    public string Genre { get; set; } = string.Empty;
+    public string? Genre { get; set; }
 
     [Required]
-    public string Duration { get; set; } = string.Empty;
+    public string? Duration { get; set; }
 }

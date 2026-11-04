@@ -4,13 +4,13 @@ public class Song
 {
     public int Id { get; set; }
     
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
 
-    public string Artist { get; set; } = string.Empty;
+    public required string Artist { get; set; }
 
-    public string Genre { get; set; } = string.Empty;
+    public required string Genre { get; set; }
 
-    public string Duration { get; set; } = string.Empty;
+    public required string Duration { get; set; }
 
     public int Votes { get; set; }
 }

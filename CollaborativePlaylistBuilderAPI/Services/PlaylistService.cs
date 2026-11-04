@@ -31,7 +31,6 @@ public class PlaylistService
 
         var playlist = new Playlist
         {
-            Id = 0,
             Name = request.Name,
             Songs = new List<int>(),
             CreatedBy = request.CreatedBy.Value,
