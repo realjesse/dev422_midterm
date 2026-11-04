@@ -5,4 +5,6 @@ namespace CollaborativePlaylistBuilderAPI.Repositories;
 public interface IPlaylistRepository
 {
     Playlist Add(Playlist playlist);
+
+    IReadOnlyList<Playlist> GetAll();
 }

@@ -40,4 +40,9 @@ public class PlaylistService
 
         return _playlistRepository.Add(playlist);
     }
+
+    public IReadOnlyList<Playlist> GetPlaylists()
+    {
+        return _playlistRepository.GetAll();
+    }
 }

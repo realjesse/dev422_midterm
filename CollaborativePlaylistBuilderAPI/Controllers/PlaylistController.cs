@@ -15,6 +15,12 @@ public class PlaylistController : ControllerBase
         _playlistService = playlistService;
     }
 
+    [HttpGet]
+    public ActionResult<IReadOnlyList<Playlist>> GetPlaylists()
+    {
+        return Ok(_playlistService.GetPlaylists());
+    }
+
     [HttpPost]
     public ActionResult<Playlist> CreatePlaylist([FromBody] CreatePlaylistRequest request)
     {

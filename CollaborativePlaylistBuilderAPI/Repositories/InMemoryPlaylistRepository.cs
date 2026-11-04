@@ -12,4 +12,9 @@ public class InMemoryPlaylistRepository : IPlaylistRepository
         Playlists.Add(playlist);
         return playlist;
     }
+
+    public IReadOnlyList<Playlist> GetAll()
+    {
+        return Playlists.ToList();
+    }
 }
