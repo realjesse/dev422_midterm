@@ -4,5 +4,7 @@ namespace CollaborativePlaylistBuilderAPI.Repositories;
 
 public interface ISongRepository
 {
+    Song Add(Song song);
+
     IReadOnlyList<Song> GetAll();
 }

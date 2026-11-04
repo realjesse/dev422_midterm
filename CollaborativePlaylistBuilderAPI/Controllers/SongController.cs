@@ -20,4 +20,18 @@ public class SongController : ControllerBase
     {
         return Ok(_songService.GetSongs());
     }
+
+    [HttpPost]
+    public ActionResult<Song> CreateSong([FromBody] CreateSongRequest request)
+    {
+        try
+        {
+            var song = _songService.CreateSong(request);
+            return StatusCode(StatusCodes.Status201Created, song);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
 }
