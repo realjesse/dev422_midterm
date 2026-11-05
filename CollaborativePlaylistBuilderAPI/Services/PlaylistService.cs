@@ -47,6 +47,28 @@ public class PlaylistService
         return _playlistRepository.GetAll();
     }
 
+    public Playlist GetRankings(int playlistId)
+    {
+        var playlist = _playlistRepository.GetById(playlistId)
+            ?? throw new KeyNotFoundException("Playlist not found.");
+
+        var rankedSongIds = playlist.Songs
+            .Select(songId => _songRepository.GetById(songId)
+                ?? throw new KeyNotFoundException("Song not found."))
+            .OrderByDescending(song => song.Votes)
+            .Select(song => song.Id)
+            .ToList();
+
+        return new Playlist
+        {
+            Id = playlist.Id,
+            Name = playlist.Name,
+            Songs = rankedSongIds,
+            CreatedBy = playlist.CreatedBy,
+            IsCollaborative = playlist.IsCollaborative
+        };
+    }
+
     public Song VoteSong(int playlistId, int songId)
     {
         var playlist = _playlistRepository.GetById(playlistId)
