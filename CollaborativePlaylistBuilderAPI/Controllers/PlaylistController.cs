@@ -47,4 +47,22 @@ public class PlaylistController : ControllerBase
             return NotFound(exception.Message);
         }
     }
+
+    [HttpPost("{id:int}/vote")]
+    public ActionResult<Song> VoteSong(int id, [FromBody] VoteSongRequest request)
+    {
+        if (request.SongId is not int songId || songId <= 0)
+        {
+            return BadRequest("A positive song ID is required.");
+        }
+
+        try
+        {
+            return Ok(_playlistService.VoteSong(id, songId));
+        }
+        catch (KeyNotFoundException exception)
+        {
+            return NotFound(exception.Message);
+        }
+    }
 }

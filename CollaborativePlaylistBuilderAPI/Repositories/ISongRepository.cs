@@ -9,4 +9,6 @@ public interface ISongRepository
     IReadOnlyList<Song> GetAll();
 
     Song? GetById(int id);
+
+    Song Update(Song song);
 }
