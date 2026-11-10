@@ -1,48 +1,42 @@
 using CollaborativePlaylistBuilderAPI.Models;
 using CollaborativePlaylistBuilderAPI.Repositories;
 
-namespace CollaborativePlaylistBuilderAPI.Services;
+namespace CollaborativePlaylistBuilderAPI.Features.Playlists.CreatePlaylist;
 
-public class PlaylistService
+public class CreatePlaylist
 {
     private readonly IPlaylistRepository _playlistRepository;
 
-    public PlaylistService(IPlaylistRepository playlistRepository)
+    public CreatePlaylist(IPlaylistRepository playlistRepository)
     {
         _playlistRepository = playlistRepository;
     }
 
-    public Playlist CreatePlaylist(CreatePlaylistRequest request)
+    public Playlist Execute(string? name, int? createdBy, bool? isCollaborative)
     {
-        if (string.IsNullOrWhiteSpace(request.Name))
+        if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException("Playlist name is required.");
         }
 
-        if (request.CreatedBy is null)
+        if (createdBy is null)
         {
             throw new ArgumentException("Playlist created by is required.");
         }
 
-        if (request.IsCollaborative is null)
+        if (isCollaborative is null)
         {
             throw new ArgumentException("Collaborative is required.");
         }
 
         var playlist = new Playlist
         {
-            Name = request.Name,
+            Name = name,
             Songs = new List<int>(),
-            CreatedBy = request.CreatedBy.Value,
-            IsCollaborative = request.IsCollaborative.Value
+            CreatedBy = createdBy.Value,
+            IsCollaborative = isCollaborative.Value
         };
 
         return _playlistRepository.Add(playlist);
     }
-
-    public IReadOnlyList<Playlist> GetPlaylists()
-    {
-        return _playlistRepository.GetAll();
-    }
-
 }
