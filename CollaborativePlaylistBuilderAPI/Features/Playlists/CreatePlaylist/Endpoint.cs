@@ -29,7 +29,7 @@ public class Endpoint : ControllerBase
         {
             var playlist = _createPlaylist.Execute(request.Name, userId, request.IsCollaborative);
             var response = new Response(playlist.Id, playlist.Name, playlist.Songs.ToList(),
-                playlist.CreatedBy, playlist.IsCollaborative);
+                playlist.CreatedBy, playlist.IsCollaborative, playlist.Collaborators.ToList());
             return StatusCode(StatusCodes.Status201Created, response);
         }
         catch (ArgumentException exception)

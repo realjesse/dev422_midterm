@@ -1,4 +1,5 @@
 using CollaborativePlaylistBuilderAPI.Features.Playlists.AddSong;
+using CollaborativePlaylistBuilderAPI.Features.Playlists.InviteCollaborator;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.CreatePlaylist;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.GetPlaylists;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.GetRankings;
@@ -58,6 +59,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IPlaylistRepository, InMemoryPlaylistRepository>();
 builder.Services.AddCreatePlaylist();
+builder.Services.AddInviteCollaborator();
 builder.Services.AddVoteForSong();
 builder.Services.AddSongFeature();
 builder.Services.AddGetRankings();

@@ -10,5 +10,7 @@ public class Playlist
 
     public required Guid CreatedBy { get; set; }
 
+    public List<Guid> Collaborators { get; set; } = new();
+
     public required bool IsCollaborative { get; set; }
 }

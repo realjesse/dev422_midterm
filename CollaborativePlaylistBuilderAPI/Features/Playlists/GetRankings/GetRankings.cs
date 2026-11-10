@@ -32,6 +32,7 @@ public class GetRankings
             Name = playlist.Name,
             Songs = rankedSongIds,
             CreatedBy = playlist.CreatedBy,
+            Collaborators = playlist.Collaborators.ToList(),
             IsCollaborative = playlist.IsCollaborative
         };
     }

@@ -20,7 +20,7 @@ public class Endpoint : ControllerBase
     {
         var playlists = _getPlaylists.Execute()
             .Select(playlist => new Response(playlist.Id, playlist.Name, playlist.Songs.ToList(),
-                playlist.CreatedBy, playlist.IsCollaborative))
+                playlist.CreatedBy, playlist.IsCollaborative, playlist.Collaborators.ToList()))
             .ToList();
 
         return Ok(playlists);

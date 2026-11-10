@@ -14,10 +14,17 @@ public class AddSong
         _songRepository = songRepository;
     }
 
-    public Playlist Execute(int playlistId, int songId)
+    public Playlist Execute(int playlistId, int songId, Guid currentUserId)
     {
         var playlist = _playlistRepository.GetById(playlistId)
             ?? throw new KeyNotFoundException("Playlist not found.");
+
+        if (currentUserId == Guid.Empty ||
+            (playlist.CreatedBy != currentUserId &&
+             (!playlist.IsCollaborative || !playlist.Collaborators.Contains(currentUserId))))
+        {
+            throw new UnauthorizedAccessException("Only the owner or a collaborator can edit this playlist.");
+        }
 
         if (_songRepository.GetById(songId) is null)
         {

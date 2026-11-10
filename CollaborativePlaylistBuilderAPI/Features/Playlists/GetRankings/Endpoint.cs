@@ -22,7 +22,7 @@ public class Endpoint : ControllerBase
         {
             var playlist = _getRankings.Execute(request.Id);
             return Ok(new Response(playlist.Id, playlist.Name, playlist.Songs,
-                playlist.CreatedBy, playlist.IsCollaborative));
+                playlist.CreatedBy, playlist.IsCollaborative, playlist.Collaborators.ToList()));
         }
         catch (KeyNotFoundException exception)
         {
