@@ -69,23 +69,6 @@ public class PlaylistService
         };
     }
 
-    public Song VoteSong(int playlistId, int songId)
-    {
-        var playlist = _playlistRepository.GetById(playlistId)
-            ?? throw new KeyNotFoundException("Playlist not found.");
-
-        if (!playlist.Songs.Contains(songId))
-        {
-            throw new KeyNotFoundException("Song is not in this playlist.");
-        }
-
-        var song = _songRepository.GetById(songId)
-            ?? throw new KeyNotFoundException("Song not found.");
-
-        song.Votes++;
-        return _songRepository.Update(song);
-    }
-
     public Playlist AddSong(int playlistId, int songId)
     {
         var playlist = _playlistRepository.GetById(playlistId)

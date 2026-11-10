@@ -1,7 +1,4 @@
 <Solution>
-  <Folder Name="/tests/">
-    <Project Path="tests/CollaborativePlaylistBuilderAPI.Tests/CollaborativePlaylistBuilderAPI.Tests.csproj" />
-  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path="README.md" />

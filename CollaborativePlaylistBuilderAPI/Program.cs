@@ -1,3 +1,4 @@
+using CollaborativePlaylistBuilderAPI.Features.Playlists.VoteForSong;
 using CollaborativePlaylistBuilderAPI.Repositories;
 using CollaborativePlaylistBuilderAPI.Services;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IPlaylistRepository, InMemoryPlaylistRepository>();
 builder.Services.AddScoped<PlaylistService>();
+builder.Services.AddVoteForSong();
 builder.Services.AddSingleton<ISongRepository, InMemorySongRepository>();
 builder.Services.AddScoped<SongService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

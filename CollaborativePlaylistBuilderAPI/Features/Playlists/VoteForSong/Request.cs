@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CollaborativePlaylistBuilderAPI.Models;
+namespace CollaborativePlaylistBuilderAPI.Features.Playlists.VoteForSong;
 
-public class VoteSongRequest
+public class Request
 {
     [Required]
     [Range(1, int.MaxValue)]
