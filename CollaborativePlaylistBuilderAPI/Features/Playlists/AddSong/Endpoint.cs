@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollaborativePlaylistBuilderAPI.Features.Playlists.AddSong;
 
 [ApiController]
+[Authorize]
 [Route("api/playlists/{id:int}/songs/{songId:int}")]
 public class Endpoint : ControllerBase
 {

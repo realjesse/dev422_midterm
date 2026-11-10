@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollaborativePlaylistBuilderAPI.Features.Playlists.VoteForSong;
 
 [ApiController]
+[Authorize]
 [Route("api/playlists/{id:int}/vote")]
 public class Endpoint : ControllerBase
 {

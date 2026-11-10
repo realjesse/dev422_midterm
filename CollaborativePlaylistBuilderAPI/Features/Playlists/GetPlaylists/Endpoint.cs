@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollaborativePlaylistBuilderAPI.Features.Playlists.GetPlaylists;
 
 [ApiController]
+[Authorize]
 [Route("api/playlists")]
 public class Endpoint : ControllerBase
 {
