@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CollaborativePlaylistBuilderAPI.Models;
+namespace CollaborativePlaylistBuilderAPI.Features.Songs.CreateSong;
 
-public class CreateSongRequest
+public class Request
 {
     [Required]
     public string? Title { get; set; }

@@ -3,8 +3,9 @@ using CollaborativePlaylistBuilderAPI.Features.Playlists.CreatePlaylist;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.GetPlaylists;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.GetRankings;
 using CollaborativePlaylistBuilderAPI.Features.Playlists.VoteForSong;
+using CollaborativePlaylistBuilderAPI.Features.Songs.CreateSong;
+using CollaborativePlaylistBuilderAPI.Features.Songs.GetSongs;
 using CollaborativePlaylistBuilderAPI.Repositories;
-using CollaborativePlaylistBuilderAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,8 @@ builder.Services.AddSongFeature();
 builder.Services.AddGetRankings();
 builder.Services.AddGetPlaylists();
 builder.Services.AddSingleton<ISongRepository, InMemorySongRepository>();
-builder.Services.AddScoped<SongService>();
+builder.Services.AddCreateSong();
+builder.Services.AddGetSongs();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

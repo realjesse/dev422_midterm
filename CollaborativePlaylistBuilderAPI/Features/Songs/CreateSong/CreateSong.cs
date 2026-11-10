@@ -1,50 +1,45 @@
 using CollaborativePlaylistBuilderAPI.Models;
 using CollaborativePlaylistBuilderAPI.Repositories;
 
-namespace CollaborativePlaylistBuilderAPI.Services;
+namespace CollaborativePlaylistBuilderAPI.Features.Songs.CreateSong;
 
-public class SongService
+public class CreateSong
 {
     private readonly ISongRepository _songRepository;
 
-    public SongService(ISongRepository songRepository)
+    public CreateSong(ISongRepository songRepository)
     {
         _songRepository = songRepository;
     }
 
-    public IReadOnlyList<Song> GetSongs()
+    public Song Execute(string? title, string? artist, string? genre, string? duration)
     {
-        return _songRepository.GetAll();
-    }
-
-    public Song CreateSong(CreateSongRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.Title))
+        if (string.IsNullOrWhiteSpace(title))
         {
             throw new ArgumentException("Song title is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(request.Artist))
+        if (string.IsNullOrWhiteSpace(artist))
         {
             throw new ArgumentException("Song artist is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(request.Genre))
+        if (string.IsNullOrWhiteSpace(genre))
         {
             throw new ArgumentException("Song genre is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(request.Duration))
+        if (string.IsNullOrWhiteSpace(duration))
         {
             throw new ArgumentException("Song duration is required.");
         }
 
         var song = new Song
         {
-            Title = request.Title,
-            Artist = request.Artist,
-            Genre = request.Genre,
-            Duration = request.Duration,
+            Title = title,
+            Artist = artist,
+            Genre = genre,
+            Duration = duration,
             Votes = 0
         };
 
