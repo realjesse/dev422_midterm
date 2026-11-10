@@ -39,8 +39,7 @@ public class CreateSong
             Title = title,
             Artist = artist,
             Genre = genre,
-            Duration = duration,
-            Votes = 0
+            Duration = duration
         };
 
         return _songRepository.Add(song);

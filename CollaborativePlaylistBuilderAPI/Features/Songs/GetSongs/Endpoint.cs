@@ -19,7 +19,7 @@ public class Endpoint : ControllerBase
     public ActionResult<IReadOnlyList<Response>> Handle()
     {
         var songs = _getSongs.Execute()
-            .Select(song => new Response(song.Id, song.Title, song.Artist, song.Genre, song.Duration, song.Votes))
+            .Select(song => new Response(song.Id, song.Title, song.Artist, song.Genre, song.Duration))
             .ToList();
 
         return Ok(songs);

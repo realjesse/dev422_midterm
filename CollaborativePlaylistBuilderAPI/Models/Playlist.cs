@@ -12,5 +12,7 @@ public class Playlist
 
     public List<Guid> Collaborators { get; set; } = new();
 
+    public Dictionary<int, HashSet<Guid>> SongVoters { get; } = new();
+
     public required bool IsCollaborative { get; set; }
 }

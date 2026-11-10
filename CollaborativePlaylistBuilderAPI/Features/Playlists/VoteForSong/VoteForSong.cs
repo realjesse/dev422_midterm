@@ -14,8 +14,13 @@ public class VoteForSong
         _songRepository = songRepository;
     }
 
-    public Song Execute(int playlistId, int songId)
+    public Result Execute(int playlistId, int songId, Guid currentUserId)
     {
+        if (currentUserId == Guid.Empty)
+        {
+            throw new ArgumentException("A voter ID is required.");
+        }
+
         var playlist = _playlistRepository.GetById(playlistId)
             ?? throw new KeyNotFoundException("Playlist not found.");
 
@@ -27,7 +32,20 @@ public class VoteForSong
         var song = _songRepository.GetById(songId)
             ?? throw new KeyNotFoundException("Song not found.");
 
-        song.Votes++;
-        return _songRepository.Update(song);
+        lock (playlist.SongVoters)
+        {
+            if (!playlist.SongVoters.TryGetValue(songId, out var voters))
+            {
+                voters = new HashSet<Guid>();
+                playlist.SongVoters[songId] = voters;
+            }
+
+            if (voters.Add(currentUserId))
+            {
+                _playlistRepository.Update(playlist);
+            }
+
+            return new Result(song, voters.Count);
+        }
     }
 }

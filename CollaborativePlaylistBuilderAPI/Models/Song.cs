@@ -11,6 +11,4 @@ public class Song
     public required string Genre { get; set; }
 
     public required string Duration { get; set; }
-
-    public int Votes { get; set; }
 }

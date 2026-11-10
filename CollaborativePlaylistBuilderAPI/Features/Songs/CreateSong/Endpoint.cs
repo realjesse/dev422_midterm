@@ -21,7 +21,7 @@ public class Endpoint : ControllerBase
         try
         {
             var song = _createSong.Execute(request.Title, request.Artist, request.Genre, request.Duration);
-            var response = new Response(song.Id, song.Title, song.Artist, song.Genre, song.Duration, song.Votes);
+            var response = new Response(song.Id, song.Title, song.Artist, song.Genre, song.Duration);
             return StatusCode(StatusCodes.Status201Created, response);
         }
         catch (ArgumentException exception)
