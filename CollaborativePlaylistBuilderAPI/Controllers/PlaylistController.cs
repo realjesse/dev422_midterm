@@ -21,19 +21,6 @@ public class PlaylistController : ControllerBase
         return Ok(_playlistService.GetPlaylists());
     }
 
-    [HttpGet("{id:int}/rankings")]
-    public ActionResult<Playlist> GetRankings(int id)
-    {
-        try
-        {
-            return Ok(_playlistService.GetRankings(id));
-        }
-        catch (KeyNotFoundException exception)
-        {
-            return NotFound(exception.Message);
-        }
-    }
-
     [HttpPost]
     public ActionResult<Playlist> CreatePlaylist([FromBody] CreatePlaylistRequest request)
     {
