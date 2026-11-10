@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CollaborativePlaylistBuilderAPI.Features.Playlists.CreatePlaylist;
 
@@ -18,9 +19,15 @@ public class Endpoint : ControllerBase
     [HttpPost]
     public ActionResult<Response> Handle([FromBody] Request request)
     {
+        var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(claim, out var userId) || userId == Guid.Empty)
+        {
+            return Unauthorized();
+        }
+
         try
         {
-            var playlist = _createPlaylist.Execute(request.Name, request.CreatedBy, request.IsCollaborative);
+            var playlist = _createPlaylist.Execute(request.Name, userId, request.IsCollaborative);
             var response = new Response(playlist.Id, playlist.Name, playlist.Songs.ToList(),
                 playlist.CreatedBy, playlist.IsCollaborative);
             return StatusCode(StatusCodes.Status201Created, response);

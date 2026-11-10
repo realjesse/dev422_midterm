@@ -12,14 +12,14 @@ public class CreatePlaylist
         _playlistRepository = playlistRepository;
     }
 
-    public Playlist Execute(string? name, int? createdBy, bool? isCollaborative)
+    public Playlist Execute(string? name, Guid createdBy, bool? isCollaborative)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException("Playlist name is required.");
         }
 
-        if (createdBy is null)
+        if (createdBy == Guid.Empty)
         {
             throw new ArgumentException("Playlist created by is required.");
         }
@@ -33,7 +33,7 @@ public class CreatePlaylist
         {
             Name = name,
             Songs = new List<int>(),
-            CreatedBy = createdBy.Value,
+            CreatedBy = createdBy,
             IsCollaborative = isCollaborative.Value
         };
 

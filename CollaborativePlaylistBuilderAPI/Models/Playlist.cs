@@ -8,7 +8,7 @@ public class Playlist
 
     public required List<int> Songs { get; set; }
 
-    public required int CreatedBy { get; set; }
+    public required Guid CreatedBy { get; set; }
 
     public required bool IsCollaborative { get; set; }
 }
