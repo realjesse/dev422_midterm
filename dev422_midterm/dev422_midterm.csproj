@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,14 +48,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollaborativePlaylistBuilder\LoginCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\LoginCPB.Designer.cs">
+      <DependentUpon>LoginCPB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\MainCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\MainCPB.Designer.cs">
+      <DependentUpon>MainCPB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\PlaylistApiClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CollaborativePlaylistBuilder\LoginCPB.resx">
+      <DependentUpon>LoginCPB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,12 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="album_inventory_microservice\" />
-    <Folder Include="collaborative_playlist_builder\" />
-    <Folder Include="homepage\" />
-    <Folder Include="music_rental_management\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
