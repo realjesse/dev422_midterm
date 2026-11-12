@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -34,6 +35,35 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
             return SendAsync("api/users/login", username, password);
         }
 
+        public async Task<List<PlaylistSummary>> GetPlaylistsAsync()
+        {
+            using (var response = await client.GetAsync("api/playlists"))
+            {
+                var content = await ReadPlaylistResponseAsync(response);
+                return json.Deserialize<List<PlaylistSummary>>(content) ?? new List<PlaylistSummary>();
+            }
+        }
+
+        public async Task CreatePlaylistAsync(string name, bool isCollaborative)
+        {
+            using (var body = new StringContent(json.Serialize(new { name, isCollaborative }), Encoding.UTF8, "application/json"))
+            using (var response = await client.PostAsync("api/playlists", body))
+            {
+                await ReadPlaylistResponseAsync(response);
+            }
+        }
+
+        private static async Task<string> ReadPlaylistResponseAsync(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new UnauthorizedAccessException("Your session has expired. Please log in again.");
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                throw new InvalidOperationException("Check the playlist name and try again.");
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException("The playlist service could not complete the request.");
+            return await response.Content.ReadAsStringAsync();
+        }
+
         private async Task<UserSession> SendAsync(string route, string username, string password)
         {
             using (var body = new StringContent(json.Serialize(new { username, password }), Encoding.UTF8, "application/json"))
@@ -58,6 +88,16 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
         }
 
         public void Dispose() { client.Dispose(); }
+    }
+
+    internal sealed class PlaylistSummary
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsCollaborative { get; set; }
+        public List<int> Songs { get; set; }
+        public Guid CreatedBy { get; set; }
+        public List<Guid> Collaborators { get; set; }
     }
 
     internal sealed class UserSession

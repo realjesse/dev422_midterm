@@ -17,16 +17,17 @@ namespace dev422_midterm
             Hide();
             try
             {
-                using (var api = new PlaylistApiClient())
-                using (var login = new LoginCPB(api))
+                while (true)
                 {
-                    if (login.ShowDialog() != DialogResult.OK) return;
-
-                    // Replace this blank form with the playlist builder main form when ready.
-                    // Pass it the same api instance to keep using the login cookie.
-                    using (var main = new Form { Text = "Collaborative Playlist Builder" })
+                    using (var api = new PlaylistApiClient())
+                    using (var login = new LoginCPB(api))
                     {
-                        main.ShowDialog();
+                        if (login.ShowDialog() != DialogResult.OK) return;
+                        using (var main = new MainCPB(api))
+                        {
+                            // Sign out or session expiry starts a fresh login session.
+                            if (main.ShowDialog() != DialogResult.Retry) return;
+                        }
                     }
                 }
             }

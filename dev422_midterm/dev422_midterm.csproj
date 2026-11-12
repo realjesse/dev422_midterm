@@ -72,6 +72,9 @@
     <EmbeddedResource Include="CollaborativePlaylistBuilder\LoginCPB.resx">
       <DependentUpon>LoginCPB.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CollaborativePlaylistBuilder\MainCPB.resx">
+      <DependentUpon>MainCPB.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
