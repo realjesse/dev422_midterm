@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AlbumInventoryMicroserviceAPI";
+
+package albums;
+
+// Album information.
+message Album {
+  int32 id = 1;
+  string title = 2;
+  string artist = 3;
+  string genre = 4;
+  int32 year = 5;
+  bool available = 6;
+}
+
+// Find an album by ID.
+message AlbumIdRequest {
+  int32 id = 1;
+}
+
+message ListAlbumsRequest {
+}
+
+message DeleteAlbumResponse {
+  string message = 1;
+}
+
+// A complete list for refreshing the table.
+message AlbumList {
+  repeated Album albums = 1;
+}
+
+// Album operations.
+service AlbumInventory {
+  rpc AddAlbum (Album) returns (Album);
+  rpc GetAlbum (AlbumIdRequest) returns (Album);
+  rpc UpdateAlbum (Album) returns (Album);
+  rpc DeleteAlbum (AlbumIdRequest) returns (DeleteAlbumResponse);
+  rpc ListAlbums (ListAlbumsRequest) returns (stream Album);
+  rpc WatchAlbums (stream ListAlbumsRequest) returns (stream AlbumList);
+}

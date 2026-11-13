@@ -133,3 +133,32 @@ After pushing, create a Pull Request on GitHub targeting the `main` branch.
 7. Use the main menu to navigate to the desired service GUI.
 
 **Note:** The backend services must be running and accessible for their corresponding Windows Forms GUI functionality to work.
+
+## Album Inventory — Vitoria Resende
+
+### Features
+- Add, find, update, and delete albums using gRPC.
+- Display available albums using server streaming.
+- Refresh available albums approximately every 3 seconds using
+  a bidirectional gRPC stream.
+- Validate required fields and year.
+- Display errors for missing albums and connection problems.
+
+### Run the module
+1. Use Windows 11, Visual Studio, the .NET 8 SDK, and
+   the .NET Framework 4.7.2 targeting pack.
+2. Restore NuGet packages and build the solution.
+3. Set AlbumInventoryMicroserviceAPI and dev422_midterm
+   as multiple startup projects, both with action Start.
+4. Run and trust the development HTTPS certificate if prompted.
+5. Wait for the server to listen at https://localhost:7112.
+6. Click Album Inventory in the VibeHive menu.
+
+### Notes
+- Albums are stored in memory and reset when the server restarts.
+- The table displays only available albums.
+- Find by ID can retrieve unavailable albums.
+- After a connection failure, restart the server and reopen
+  the album screen to resume automatic updates.
+- The client and server share Protos/album_service.proto
+  through a linked file.
