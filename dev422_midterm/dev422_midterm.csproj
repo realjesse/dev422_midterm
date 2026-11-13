@@ -66,6 +66,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\SongLibaryCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CollaborativePlaylistBuilder\PlaylistApiClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

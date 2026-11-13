@@ -53,6 +53,35 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
             }
         }
 
+        public async Task<List<SongSummary>> GetSongsAsync()
+        {
+            using (var response = await client.GetAsync("api/songs"))
+            {
+                var content = await ReadSongResponseAsync(response);
+                return json.Deserialize<List<SongSummary>>(content) ?? new List<SongSummary>();
+            }
+        }
+
+        public async Task CreateSongAsync(string title, string artist, string genre, string duration)
+        {
+            using (var body = new StringContent(json.Serialize(new { title, artist, genre, duration }), Encoding.UTF8, "application/json"))
+            using (var response = await client.PostAsync("api/songs", body))
+            {
+                await ReadSongResponseAsync(response);
+            }
+        }
+
+        private static async Task<string> ReadSongResponseAsync(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new UnauthorizedAccessException("Your session has expired. Please log in again.");
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                throw new InvalidOperationException("Title, artist, genre, and duration are required.");
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException("The song request could not be completed. Please try again.");
+            return await response.Content.ReadAsStringAsync();
+        }
+
         private static async Task<string> ReadPlaylistResponseAsync(HttpResponseMessage response)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -88,6 +117,15 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
         }
 
         public void Dispose() { client.Dispose(); }
+    }
+
+    internal sealed class SongSummary
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Artist { get; set; }
+        public string Genre { get; set; }
+        public string Duration { get; set; }
     }
 
     internal sealed class PlaylistSummary

@@ -35,7 +35,7 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
             createPlaylistButton.Click += async (sender, args) => await CreatePlaylistAsync();
             signOutButton.Click += (sender, args) => { DialogResult = DialogResult.Retry; Close(); };
             openPlaylistButton.Click += (sender, args) => MessageBox.Show(this, "The playlist form has not been built yet.");
-            songLibraryButton.Click += (sender, args) => MessageBox.Show(this, "The song library form has not been built yet.");
+            songLibraryButton.Click += OpenSongLibrary;
             playlistDataGridView.ReadOnly = true;
             playlistDataGridView.AllowUserToAddRows = false;
             playlistDataGridView.AllowUserToDeleteRows = false;
@@ -44,6 +44,24 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
         internal MainCPB(PlaylistApiClient api) : this()
         {
             this.api = api;
+        }
+
+        private void OpenSongLibrary(object sender, EventArgs e)
+        {
+            if (api == null) return;
+            refreshTimer.Stop();
+            try
+            {
+                using (var library = new SongLibaryCPB(api))
+                {
+                    if (library.ShowDialog(this) == DialogResult.Retry && !closed)
+                    {
+                        DialogResult = DialogResult.Retry;
+                        Close();
+                    }
+                }
+            }
+            finally { if (!closed) refreshTimer.Start(); }
         }
 
         private async Task RefreshPlaylistsAsync()
