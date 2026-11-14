@@ -70,6 +70,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CollaborativePlaylistBuilder\PlaylistApiClient.cs" />
+    <Compile Include="CollaborativePlaylistBuilder\PlaylistCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CollaborativePlaylistBuilder\LoginCPB.resx">

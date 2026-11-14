@@ -9,6 +9,8 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
     public class SongLibaryCPB : Form
     {
         private readonly PlaylistApiClient api;
+        private readonly int? playlistId;
+        private readonly Button addToPlaylistButton = new Button { Text = "Add selected song to playlist", AutoSize = true, Visible = false };
         private readonly DataGridView songDataGridView = new DataGridView();
         private readonly TextBox titleTextBox = new TextBox();
         private readonly TextBox artistTextBox = new TextBox();
@@ -62,7 +64,11 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
             layout.Controls.Add(statusLabel, 0, 2);
             var backButton = new Button { Text = "Back", AutoSize = true };
             backButton.Click += (sender, args) => Close();
-            layout.Controls.Add(backButton, 0, 3);
+            var actions = new FlowLayoutPanel { Dock = DockStyle.Fill };
+            actions.Controls.Add(backButton);
+            actions.Controls.Add(addToPlaylistButton);
+            addToPlaylistButton.Click += async (sender, args) => await AddToPlaylistAsync();
+            layout.Controls.Add(actions, 0, 3);
             Controls.Add(layout);
 
             Shown += async (sender, args) => await LoadSongsAsync();
@@ -72,6 +78,34 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
         internal SongLibaryCPB(PlaylistApiClient api) : this()
         {
             this.api = api;
+        }
+
+        internal SongLibaryCPB(PlaylistApiClient api, int playlistId) : this(api)
+        {
+            this.playlistId = playlistId;
+            addToPlaylistButton.Visible = true;
+        }
+
+        private async Task AddToPlaylistAsync()
+        {
+            if (busy || closed || api == null || !playlistId.HasValue) return;
+            var song = songDataGridView.CurrentRow?.DataBoundItem as SongSummary;
+            if (song == null) { MessageBox.Show(this, "Select a song first."); return; }
+            busy = true;
+            addToPlaylistButton.Enabled = false;
+            createSongGroupBox.Enabled = false;
+            try
+            {
+                await api.AddSongAsync(playlistId.Value, song.Id);
+                if (closed) return;
+                statusLabel.Text = "Added " + song.Title + " to the playlist. You can add another song or go Back.";
+            }
+            catch (Exception exception) when (IsApiError(exception)) { HandleError(exception); }
+            finally
+            {
+                busy = false;
+                if (!closed) { addToPlaylistButton.Enabled = true; createSongGroupBox.Enabled = true; }
+            }
         }
 
         private static void AddField(TableLayoutPanel fields, string label, TextBox input, int row)
@@ -155,7 +189,7 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
                 : exception is ArgumentException ? "The API returned an unexpected response."
                 : exception.Message;
             if (created) message = "Song created, but the grid could not reload. Reopen the song library to load it.\n\n" + message;
-            statusLabel.Text = created ? "Song created; reopen the library to reload songs." : "Request failed.";
+            statusLabel.Text = created ? "Song created, reopen the library to reload songs." : "Request failed.";
             MessageBox.Show(this, message);
             if (exception is UnauthorizedAccessException)
             {

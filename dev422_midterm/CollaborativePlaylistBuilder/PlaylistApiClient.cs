@@ -14,6 +14,7 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
     {
         private readonly HttpClient client;
         private readonly JavaScriptSerializer json = new JavaScriptSerializer();
+        public UserSession CurrentUser { get; private set; }
 
         public PlaylistApiClient()
         {
@@ -30,9 +31,56 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
             await SendAsync("api/users/register", username, password);
         }
 
-        public Task<UserSession> LoginAsync(string username, string password)
+        public async Task<UserSession> LoginAsync(string username, string password)
         {
-            return SendAsync("api/users/login", username, password);
+            CurrentUser = null;
+            CurrentUser = await SendAsync("api/users/login", username, password);
+            return CurrentUser;
+        }
+
+        public async Task<PlaylistSummary> GetPlaylistAsync(int playlistId)
+        {
+            using (var response = await client.GetAsync("api/playlists/" + playlistId + "/rankings"))
+            {
+                var content = await ReadPlaylistActionResponseAsync(response);
+                return json.Deserialize<PlaylistSummary>(content)
+                    ?? throw new InvalidOperationException("The API returned an unexpected playlist response.");
+            }
+        }
+
+        public async Task AddSongAsync(int playlistId, int songId)
+        {
+            using (var response = await client.PutAsync("api/playlists/" + playlistId + "/songs/" + songId, null))
+                await ReadPlaylistActionResponseAsync(response);
+        }
+
+        public async Task VoteAsync(int playlistId, int songId)
+        {
+            using (var body = new StringContent(json.Serialize(new { songId }), Encoding.UTF8, "application/json"))
+            using (var response = await client.PostAsync("api/playlists/" + playlistId + "/vote", body))
+                await ReadPlaylistActionResponseAsync(response);
+        }
+
+        public async Task InviteCollaboratorAsync(int playlistId, string username)
+        {
+            using (var body = new StringContent(json.Serialize(new { username }), Encoding.UTF8, "application/json"))
+            using (var response = await client.PostAsync("api/playlists/" + playlistId + "/invitations", body))
+                await ReadPlaylistActionResponseAsync(response);
+        }
+
+        private static async Task<string> ReadPlaylistActionResponseAsync(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new UnauthorizedAccessException("Your session has expired. Please log in again.");
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+                throw new InvalidOperationException("Only the owner or an invited collaborator can make this change.");
+            if (!response.IsSuccessStatusCode)
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException(string.IsNullOrWhiteSpace(message)
+                    ? "The playlist request failed." : message.Trim('"'));
+            }
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<List<PlaylistSummary>> GetPlaylistsAsync()
@@ -136,6 +184,7 @@ namespace dev422_midterm.CollaborativePlaylistBuilder
         public List<int> Songs { get; set; }
         public Guid CreatedBy { get; set; }
         public List<Guid> Collaborators { get; set; }
+        public Dictionary<string, int> Votes { get; set; }
     }
 
     internal sealed class UserSession
