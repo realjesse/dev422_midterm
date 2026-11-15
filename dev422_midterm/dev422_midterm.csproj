@@ -62,6 +62,8 @@
       <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -92,6 +94,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollaborativePlaylistBuilder\LoginCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\LoginCPB.Designer.cs">
+      <DependentUpon>LoginCPB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\MainCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\MainCPB.Designer.cs">
+      <DependentUpon>MainCPB.cs</DependentUpon>
+    </Compile>
     <Compile Include="album_inventory_microservice\AlbumInventoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,10 +118,26 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\SongLibaryCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollaborativePlaylistBuilder\PlaylistApiClient.cs" />
+    <Compile Include="CollaborativePlaylistBuilder\PlaylistCPB.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="album_inventory_microservice\AlbumInventoryForm.resx">
       <DependentUpon>AlbumInventoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollaborativePlaylistBuilder\LoginCPB.resx">
+      <DependentUpon>LoginCPB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollaborativePlaylistBuilder\MainCPB.resx">
+      <DependentUpon>MainCPB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -137,8 +167,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="collaborative_playlist_builder\" />
-    <Folder Include="homepage\" />
     <Folder Include="music_rental_management\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

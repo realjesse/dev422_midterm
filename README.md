@@ -162,3 +162,38 @@ After pushing, create a Pull Request on GitHub targeting the `main` branch.
   the album screen to resume automatic updates.
 - The client and server share Protos/album_service.proto
   through a linked file.
+
+## Collaborative Playlist Builder — Jesse Wattenhofer
+
+### Features
+
+- Register an account, then log in using cookie authentication.
+- Create playlists and songs, and add songs to playlists.
+- Invite registered users to edit collaborative playlists.
+- Vote for songs and view playlists ranked by vote count.
+- Refresh playlists and rankings automatically every 5 seconds.
+- Load the song library when opened and refresh it after creating a song.
+
+### Run the module
+
+1. Restore NuGet packages and build the solution using the .NET 8 SDK
+   and the .NET Framework 4.7.2 targeting pack on Windows.
+2. Start CollaborativePlaylistBuilderAPI using its **http** launch profile,
+   or run this command from the repository root:
+   `dotnet run --project CollaborativePlaylistBuilderAPI --launch-profile http`.
+3. Wait for the API to listen at http://localhost:5123.
+   HTTPS and a development certificate are not required for this profile.
+4. Start dev422_midterm and click Collaborative Playlist Builder
+   in the VibeHive menu.
+5. Register an account, then click Login to enter the playlist builder.
+
+### Notes
+
+- Users, songs, playlists, and votes are stored in memory and reset
+  when the API restarts.
+- Registration does not log the user in. Login establishes the session,
+  and signing out discards the client's authentication cookie.
+- Only the owner or an invited collaborator can add songs to a playlist.
+  Only the owner can invite collaborators, and the playlist must be collaborative.
+- Each user can vote once per song in each playlist.
+- The API address is set by PlaylistApiBaseUrl in dev422_midterm/App.config.
